@@ -4,7 +4,6 @@ pub mod context;
 pub mod state;
 pub mod errors;
 pub mod events;
-pub mod utils;
 
 use context::*;
 

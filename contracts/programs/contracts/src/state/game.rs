@@ -14,3 +14,19 @@ pub struct Game {
     pub timeout_seconds: u64,    // time allowed per move
     pub bump: u8,
 }
+
+impl Game {
+    pub const LEN: usize = 8
+        + 32 // player_x
+        + 32 // player_o
+        + 8  // wager
+        + 8  // total_pot
+        + 9  // board
+        + 1  // turn
+        + 1  // status
+        + 8  // created_at
+        + 8  // last_move_ts
+        + 8  // timeout_seconds
+        + 1  // bump
+        + 7; // padding to round up
+}

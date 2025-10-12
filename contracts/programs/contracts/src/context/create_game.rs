@@ -29,7 +29,18 @@ pub fn handler(ctx: Context<CreateGame>, wager: u64) -> Result<()> {
     game.created_at = Clock::get().unwrap().unix_timestamp;
     game.last_move_ts = game.created_at;
     game.timeout_seconds = 120; // 2 minutes
-    game.bump = *ctx.bumps.get("game").unwrap();
+    let bump: u8 = match ctx.bumps.get("game") {
+        Some(b) => *b,
+        None => {
+            let ts_bytes = game.created_at.to_le_bytes();
+            let (_pda, computed_bump) = Pubkey::find_program_address(
+                &[b"game", ctx.accounts.creator.key.as_ref(), &ts_bytes],
+                &crate::ID,
+            );
+            computed_bump
+        }
+    };
+    game.bump = bump;
 
     let cpi_accounts = Transfer {
         from: ctx.accounts.creator.to_account_info(),
