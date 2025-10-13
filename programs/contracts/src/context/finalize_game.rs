@@ -1,10 +1,8 @@
-use crate::state::game::Game;
-use crate::state::constants::GameStatus;
-use crate::errors::TicTacToeError;
-use crate::events::{GameFinalized, WinningsDistributed, FeeCollected};
-use crate::utils::get_signer_seeds;
+use crate::errors::*;
+use crate::events::*;
+use crate::utils::*;
 use anchor_lang::prelude::*;
-use anchor_lang::system_program::{transfer, Transfer, System};
+use anchor_lang::system_program::{transfer, System};
 
 #[derive(Accounts)]
 pub struct FinalizeGame<'info> {
@@ -68,15 +66,18 @@ pub fn handler(ctx: Context<FinalizeGame>) -> Result<()> {
         bump_slice.as_ref(),
     );
     
-    let cpi_accounts = Transfer {
-        from: game_info.clone(),
-        to: payout_recipient.to_account_info(),
-    };
+    let signer_seeds = get_signer_seeds(
+    &game.player_x,
+    ts_bytes.as_ref(),
+    bump_slice.as_ref(),
+    );
+
+    let signer = &[&signer_seeds[..]];
 
     let cpi_ctx = CpiContext::new_with_signer(
-        ctx.accounts.system_program.to_account_info(), 
-        cpi_accounts, 
-        signer_seeds
+        ctx.accounts.system_program.to_account_info(),
+        cpi_accounts,
+        signer,
     );
     
     transfer(cpi_ctx, distribution_amount)?;
