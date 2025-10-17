@@ -1,18 +1,8 @@
 use anchor_lang::prelude::*;
 
-pub mod context;
-pub mod state;
-pub mod errors;
-pub mod events;
-pub mod utils;
 
-use context::create_game::CreateGame;
-use context::join_game::JoinGame;
-use context::make_move::MakeMove;
-use context::finalize_game::FinalizeGame;
-use state::constants::BOARD_SIZE;
 
-declare_id!("7FvH5N8zG2DPo3vkoY8L7c5Y6SPzdyoJUNCmPUUnHUNx");
+declare_id!("FnvUdc6BXAPAC3dY2d3YEiP4L3pq4wTfD4mYrhNFKHVA");
 
 #[program]
 pub mod contracts {
