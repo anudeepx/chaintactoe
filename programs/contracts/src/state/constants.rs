@@ -7,6 +7,7 @@ pub const BOARD_SIZE: usize = 9;
 pub const DEFAULT_TIMEOUT_SECONDS: u64 = 60;
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug)]
 pub enum GameStatus {
     Open,
     /// 1. Game is in progress, it is player 'X's turn to move.
